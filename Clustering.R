@@ -4,7 +4,7 @@
 
 # --- Actual-data data sets
 
-db.file.PWT = "./../PWT/pwt91.csv"
+db.file.PWT = "./Data/PWT/pwt91.csv"
 db.PWT <- read.csv(db.file.PWT)
 db.PWT.needed <- db.PWT[c("country", "year", "pop", "rgdpna")]
 db.PWT.needed.usa <- db.PWT.needed[db.PWT.needed$country == "United States",]
@@ -15,7 +15,7 @@ growth_rate
 plot(growth_rate)
 
 
-db.file.Swiid = "./../Swiid/swiid8_3_summary.csv"
+db.file.Swiid = "./Data/Swiid/swiid8_3_summary.csv"
 db.Swiid <- read.csv(db.file.Swiid)
 db.Swiid.needed <- db.Swiid[c("country", "year", "gini_mkt", "gini_disp")]
 db.Swiid.needed.usa <- db.Swiid.needed[db.Swiid.needed$country == "United States",]
@@ -42,13 +42,13 @@ source("CustomKMeans.R")
 
 # --- Prepare data
 
-db.file.MickeyMouse = "./../Custom/MickeyMouse.csv"
+db.file.MickeyMouse = "./Data/Custom/MickeyMouse.csv"
 db.MickeyMouse <- read.csv(db.file.MickeyMouse)
 
-db.file.Circles = "./../Custom/Circles.csv"
+db.file.Circles = "./Data/Custom/Circles.csv"
 db.Circles <- read.csv(db.file.Circles)
 
-db.file.Crescents = "./../Custom/Crescents.csv"
+db.file.Crescents = "./Data/Custom/Crescents.csv"
 db.Crescents <- read.csv(db.file.Crescents)
 
 # --- Prepare data
