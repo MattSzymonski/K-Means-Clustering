@@ -29,9 +29,9 @@ RecalculateClusters <- function(data, cluster.number, centroid, clusters) {
 CalculateClusterRadius <- function(data, cluster.number, centroid, clusters) {
   radius <- rep(0, cluster.number)
   for(i in 1:length(data[,1])) {
-      distance <- SquaredEuclideanDistance(data[i,], centroid[clusters[i],])
-      if (distance > radius[clusters[i]]) {
-        radius[clusters[i]] <- distance
+    distance <- SquaredEuclideanDistance(data[i,], centroid[clusters[i],])
+    if (distance > radius[clusters[i]]) {
+      radius[clusters[i]] <- distance
     }
   }
   return (sqrt(radius))
@@ -70,29 +70,37 @@ CalculateBetweenClusterVariation <- function(cluster.number, centroid) {
 CustomKMeans <- function(data, cluster.number=3, iteration.max.number=100) {
   # Data should be dataframe or matrix where each row is one point and each column is variable
   
+  data <- data[,c(1:2)]
+  
   message("Calculating clusters...")
   
   # --- Randomly pick initial centroids
   
-  set.seed(2137)
+  #set.seed(2137)
   centroids.initial.x <- runif(cluster.number, min(data[,1]), max(data[,1])) # Generate random deviates of uniform distribution
-  set.seed(1337)
+  #set.seed(1337)
   centroids.initial.y <- runif(cluster.number, min(data[,2]), max(data[,2])) # Generate random deviates of uniform distribution
   
   centroid <- matrix(nrow = cluster.number, ncol=2)
   for(i in 1:cluster.number) { # Set up initial centroid coordinates
     centroid[i,] <- c(centroids.initial.x[i], centroids.initial.y[i])  
   }
-
+  
   # --- Calculate the distances of all observations and assign cluster
   
   clusters <- clusters.new <- rep(NA, length(data[,1])) # Vector of indies of closest centroids to points (element is point, value is index of centroid)
-  clusters <- clusters.new <- RecalculateClusters(data, cluster.number, centroid, clusters)
+  clusters <-  RecalculateClusters(data, cluster.number, centroid, clusters)
+ 
+  # --- Recalculate centroids and reassign clusters (First step)
+  
+  centroid <- UpdateCentroids(data, cluster.number, centroid, clusters)
+  clusters.new <- RecalculateClusters(data, cluster.number, centroid, clusters.new)
   
   # --- Iterate
   
-  counter <- 1 # since we already have two iterations
-
+  counter <- 2 # since we already have two iterations
+  identifier <- sum(abs(clusters - clusters.new)) # Check if clusters changed from last iteration (points have been assigned to other centroids)
+  
   repeat{
     clusters <- clusters.new
     centroid <- UpdateCentroids(data, cluster.number, centroid, clusters)
@@ -103,7 +111,7 @@ CustomKMeans <- function(data, cluster.number=3, iteration.max.number=100) {
     if (identifier == 0) { break }
     if (counter == iteration.max.number) { break }
   }
-
+  
   cluster.radius <- CalculateClusterRadius(data, cluster.number, centroid, clusters.new)
   cluster.size <- CalculateClustersSize(cluster.number, clusters.new)
   within.cluster.variation <- CalculateWithinClusterVariation(data, cluster.number, centroid, clusters.new)
@@ -118,7 +126,7 @@ CustomKMeans <- function(data, cluster.number=3, iteration.max.number=100) {
     wcv = within.cluster.variation,
     twcv = sum(within.cluster.variation),
     bcv = between.clusters.variation
-    )
+  )
   
   class(customKMeansResult) <- "CustomKMeansResult"
   return(customKMeansResult)
