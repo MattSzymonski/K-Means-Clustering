@@ -50,7 +50,7 @@ cluster.number <- 5
 x <- data$growth.rate
 y <- data$gini.disp.rate 
 color <- data$country
-title <- "Clustering"
+title <- ""
 x.label <- "Growth Rate"
 y.label <- "Gini Displacement Rate"
 
@@ -63,15 +63,18 @@ ggplot() +
 # --- Calculate clusters
 
 data <- data[c("growth.rate", "gini.disp.rate", "country")]
-result <- CustomKMeans(data, cluster.number, 20)
+result <- CustomKMeans(data, cluster.number, 3)
 
 # --- Plot
-ggplot() + 
+p <- ggplot() + 
   geom_point(data=data, aes(x=x, y=y, color=country)) +
   geom_point(data=as.data.frame(result$centers), aes(x=result$centers[,1], y=result$centers[,2]), size=5, shape=8) +
   stat_chull(data=data, aes(x=x, y=y, fill = as.factor(result$cluster)), alpha = 0.1, geom = "polygon") + 
   labs(fill = "Clusters", color = "Countries", title=title, y=y.label, x=x.label) + theme(legend.position="right") 
 
+#ggsave(p, file=paste0("Plots/Synthesized_", i, "_clusters_", cluster.number,".png"), width = 15, height = 13, units = "cm")
+
+print(p)
 
 message("Number of iterations: ", result$iterations)
 

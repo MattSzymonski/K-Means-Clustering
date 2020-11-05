@@ -67,7 +67,7 @@ CalculateBetweenClusterVariation <- function(cluster.number, centroid) {
 
 # ------------------------ Algorithm (Hartigan-Wong (1979)) ------------------------
 
-CustomKMeans <- function(data, cluster.number=3, iteration.max.number=100) {
+CustomKMeans <- function(data, cluster.number=3, iteration.limit=100) {
   # Data should be dataframe or matrix where each row is one point and each column is variable
   
   data <- data[,c(1:2)]
@@ -109,7 +109,7 @@ CustomKMeans <- function(data, cluster.number=3, iteration.max.number=100) {
     identifier <- sum(abs(clusters - clusters.new))
     counter <- counter + 1
     if (identifier == 0) { break }
-    if (counter == iteration.max.number) { break }
+    if (counter == iteration.limit) { break }
   }
   
   cluster.radius <- CalculateClusterRadius(data, cluster.number, centroid, clusters.new)
