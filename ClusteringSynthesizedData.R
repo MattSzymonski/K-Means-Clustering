@@ -20,8 +20,8 @@ db.Crescents <- read.csv(db.file.Crescents)
 
 data.type <- list()
 data.type[[1]] <- db.MickeyMouse
-#data.type[[2]] <- db.Circles
-#data.type[[3]] <- db.Crescents
+data.type[[2]] <- db.Circles
+data.type[[3]] <- db.Crescents
 
 
 # --- Prepare data
@@ -44,7 +44,8 @@ for (i in 1:length(data.type)) {
     geom_point(data=data, aes(x=x, y=y, color=color), show.legend = F) +
     geom_point(data=as.data.frame(result$centers), aes(x=result$centers[,1], y=result$centers[,2]), size=5, shape=8) +
     stat_chull(data=data, aes(x=x, y=y, fill=color), alpha = 0.1, geom = "polygon") + 
-    labs(fill = "Clusters", title=title, y=y.label, x=x.label) + theme(legend.position="right") 
+    labs(fill = "Clusters", title=title, y=y.label, x=x.label) + theme(legend.position="right") +
+    guides(colour = guide_legend(override.aes = list(size=3)))
 
   ggsave(p, file=paste0("Plots/Synthesized_", i, "_clusters_", cluster.number,".png"), width = 15, height = 13, units = "cm")
 

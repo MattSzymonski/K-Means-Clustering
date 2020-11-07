@@ -1,4 +1,4 @@
-# k-means clustering algorithm based on Hartigan-Wong approach, written Mateusz Szymonski
+# k-means clustering algorithm based on Lloyd's approach, written Mateusz Szymonski
 
 # ------------------------ Auxiliary Functions -------------------------
 
@@ -68,7 +68,7 @@ CalculateBetweenClusterVariation <- function(cluster.number, centroid) {
 # ------------------------ Algorithm (Hartigan-Wong (1979)) ------------------------
 
 CustomKMeans <- function(data, cluster.number=3, iteration.limit=100) {
-  # Data should be dataframe or matrix where each row is one point and each column is variable
+  # Data should be dataframe where first column is x value of data point,  second  column  is  y  value  of  data  point and each row is one data point
   
   data <- data[,c(1:2)]
   
