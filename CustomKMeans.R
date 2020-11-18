@@ -76,9 +76,7 @@ CustomKMeans <- function(data, cluster.number=3, iteration.limit=100) {
   
   # --- Randomly pick initial centroids
   
-  #set.seed(2137)
   centroids.initial.x <- runif(cluster.number, min(data[,1]), max(data[,1])) # Generate random deviates of uniform distribution
-  #set.seed(1337)
   centroids.initial.y <- runif(cluster.number, min(data[,2]), max(data[,2])) # Generate random deviates of uniform distribution
   
   centroid <- matrix(nrow = cluster.number, ncol=2)
